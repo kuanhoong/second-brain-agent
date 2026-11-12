@@ -1,6 +1,6 @@
 # Second Brain: Open Knowledge Format (OKF) meets Google Gemini
 
-A second brain that fills itself in. You name a topic or paste a URL. Gemini finds and reads the sources, writes a summary, tags it, files it as an [Open Knowledge Format](https://github.com/GoogleCloudPlatform/open-knowledge-format) v0.2 concept, and links it into a knowledge graph that redraws live while the agent works.
+A second brain that fills itself in. You name a topic, paste a URL, or highlight a passage in Chrome. Gemini finds and reads the sources, writes a summary, tags it, files it as an [Open Knowledge Format](https://github.com/GoogleCloudPlatform/open-knowledge-format) v0.2 concept, and links it into a knowledge graph that redraws live while the agent works.
 
 Built with the Agent Development Kit (ADK) 2.x and a Google AI Studio API key. Demo for the talk *Building an Intelligent Second Brain: Open Knowledge Format (OKF) Meets Google Gemini* (DevFest Kuala Lumpur 2026).
 
@@ -47,8 +47,12 @@ flowchart LR
     C -->|AgentTool| R[page_reader<br/>url_context]
     C -->|AgentTool| F[fact_checker<br/>url_context]
     C -->|function tools| T[save_source · save_concept<br/>search_brain · read_concept<br/>review_brain · record_check<br/>verify_concept · deprecate_concept]
+    X([You in Chrome<br/>highlight + save]) -->|POST /api/capture| G
+    G -->|highlight filed by code| V
+    G -->|then| H[highlight_filer<br/>brain_overview · save_concept]
+    H --> V
     T --> V[(vault/<br/>OKF v0.2 bundle)]
-    V --> G[graph_server.py<br/>live knowledge graph]
+    V --> G[graph_server.py<br/>live graph + capture API]
 ```
 
 Design choices worth pointing out on stage:
@@ -60,18 +64,21 @@ Design choices worth pointing out on stage:
 
 ## Run it
 
-Python 3.10 or newer.
+Python 3.10 or newer and a [Google AI Studio API key](https://aistudio.google.com/apikey).
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
+git clone https://github.com/kuanhoong/second-brain-agent && cd second-brain-agent
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env            # paste your Google AI Studio key
+cp .env.example .env            # paste your key into GOOGLE_API_KEY
 
 python graph_server.py          # terminal 1: live graph at http://localhost:8765
-adk web                         # terminal 2: open the dev UI, pick "second_brain"
+adk web                         # terminal 2: open http://localhost:8000 and pick "second_brain"
 ```
 
-Put the two browser windows side by side: chat on the left, graph on the right. `run_demo.md` has the stage runsheet.
+Run both commands from the repo root. `adk web` finds the `.env` there by itself, and `graph_server.py` reads the same file, so the key is set once.
+
+Put the two browser windows side by side: chat on the left, graph on the right. Press `f` in the graph to fit the view. `run_demo.md` has the stage runsheet with the five demo beats and fallbacks.
 
 ## Example brain: AI micro drama
 
@@ -82,9 +89,11 @@ VAULT_DIR=brains/ai-micro-drama python graph_server.py   # graph of this brain
 VAULT_DIR=brains/ai-micro-drama adk web                  # ask the curator about it, or add to it
 ```
 
+On Windows PowerShell, set it first with `$env:VAULT_DIR="brains/ai-micro-drama"`, or put `VAULT_DIR=` in `.env`. Both servers must point at the same bundle.
+
 Every claim is footnoted to a source page. All 54 concepts were researched and written by Claude in November 2026, so they are `status: draft` and unverified: read them, then ask the curator to verify the ones you trust. Notes on fast-moving topics (models, prices, platform rules) carry short `stale_after` dates on purpose. Two links point to notes not written yet (localization, image models for keyframes): `review_brain` lists them as what to research next.
 
-In the graph, press `f` to fit the view, and untick tags and sources to see the concepts alone.
+In the graph, untick tags and sources to see the concepts alone.
 
 ## Chrome extension: capture what you highlight
 
@@ -101,15 +110,17 @@ How a capture is handled:
 - **Locked down.** The server listens on 127.0.0.1 and accepts captures only from a `chrome-extension://` origin, so an ordinary web page cannot post into your brain.
 - **Works where URL reading cannot.** The text comes from your browser, so logged-in and paywalled pages work. It is also sent to the Gemini API, so do not highlight anything confidential.
 
-Other commands:
+## Other commands
 
 ```bash
-python scripts/validate.py                              # OKF v0.2 conformance check
-python scripts/offline_capture.py model-context-protocol   # canned capture, no network
-python graph_server.py --export viz.html                # self-contained offline graph
-pip install -r requirements-dev.txt && pytest -q        # offline tests, no API key
-./reset.sh                                              # restore the vault (needs a git commit)
+python scripts/validate.py                                 # OKF v0.2 conformance check
+python scripts/offline_capture.py model-context-protocol   # canned capture, no network or key
+python graph_server.py --export viz.html                   # self-contained offline graph
+pip install -r requirements-dev.txt && pytest -q           # offline tests, no API key
+./reset.sh                                                 # restore vault/ to the committed seed state
 ```
+
+`reset.sh` uses git, so it works in a clone of this repo. It resets `vault/` only, not `brains/`.
 
 ## Layout
 
@@ -138,5 +149,10 @@ run_demo.md          stage runsheet
 - Model IDs and ADK APIs move fast. This was written against `google-adk` 2.14 and `gemini-3.8-flash` in November 2026. Check both before you rely on them.
 - Search and URL reads count against your AI Studio quota.
 - OKF is at v0.2 and still changing. `superseded_by` is this demo's own extension key, which the spec permits.
+- The extension is loaded unpacked for the demo; it is not in the Chrome Web Store.
+
+## Earlier version
+
+The first version of this demo (the "archivist" agent that tidied an inbox into an OKF v0.1 vault) is in the git history at commit `672b033`.
 
 MIT licensed.
