@@ -1,6 +1,8 @@
 .env
-.venv/
 __pycache__/
 *.pyc
+.venv/
+.pytest_cache/
 viz.html
-.DS_Store
+.adk/
+*.db

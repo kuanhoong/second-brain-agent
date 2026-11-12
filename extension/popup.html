@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  body { width: 340px; margin: 0; padding: 14px; background: #171029; color: #f3f0ff; font: 14px/1.45 system-ui, "Segoe UI", sans-serif; }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h1 span { color: #EC4899; }
+  #quote { max-height: 150px; overflow: auto; background: #241748; border-radius: 8px; padding: 10px; font-style: italic; color: #CFC8F5; white-space: pre-wrap; }
+  #page { color: #a79fd0; font-size: 12px; margin: 8px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  button { width: 100%; padding: 9px; border: 0; border-radius: 8px; background: #6C4BF6; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+  button:disabled { background: #3a2f6b; cursor: default; }
+  #status { margin-top: 10px; font-size: 13px; min-height: 18px; }
+  .tag { display: inline-block; border: 1px solid #EC4899; color: #EC4899; border-radius: 999px; padding: 0 8px; margin: 2px 4px 0 0; font-size: 12px; }
+  small { display: block; margin-top: 10px; color: #a79fd0; font-size: 11px; }
+</style>
+</head>
+<body>
+  <h1>Second Brain <span>capture</span></h1>
+  <div id="quote">Reading your highlight…</div>
+  <div id="page"></div>
+  <button id="save" disabled>Save highlight</button>
+  <div id="status"></div>
+  <small>The highlighted text is sent to your local server and then to the Gemini API to be summarised.</small>
+  <script src="shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

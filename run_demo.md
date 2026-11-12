@@ -1,49 +1,68 @@
-# Demo runsheet — the multi-agent second brain
+# Stage runsheet
 
-Split your screen: **left** = the `adk web` chat (shows the live tool-call / agent-transfer trace), **right** = `viz.html` (the knowledge graph, color-coded by trust signal). Every prompt below changes the graph on the right.
+Screen: `adk web` chat on the left half, `http://localhost:8765` graph on the right half. Browser zoom 125% on both.
 
-> Reliability: agents are non-deterministic. Run `./reset.sh` before every rehearsal and before you go on stage, keep a spare API key, and have the backup recording queued. Decide your abort-to-video trigger in advance (e.g. no answer in ~20s).
+## Before you walk on
 
-## Setup (once)
 ```bash
-pip install -r requirements.txt
-cp .env.example .env          # paste your Google AI Studio key
-python build_viz.py           # generate viz.html, open it in a browser
-adk web                       # opens the dev UI; pick the "archivist" agent
+./reset.sh                      # vault back to the seed state
+python scripts/validate.py      # expect "conformant": true
+python graph_server.py          # terminal 1
+adk web                         # terminal 2, pick second_brain, start a NEW session
 ```
 
-## The 4-beat storyline (~6–7 min)
+Load the extension once (`chrome://extensions`, Developer mode, Load unpacked, `extension/`), pin it to the toolbar, and keep the embeddings docs page open in a tab.
 
-**Act 1 — CAPTURE → COMPILE** *(orchestrator → writer → linker)*
-> Prompt: **"Process the raw note in my inbox and file it properly."**
-Watch: the writer compiles `00_inbox/dump.md` into a clean `concepts/…md` (status: **draft**), the linker adds it to the concepts index. Refresh `viz.html` → a new **amber** node appears, wired into the graph.
-Say: *"Messy in, structured knowledge out — it filed and linked itself. That's the compiler."*
+Check the graph shows 9 concepts, 2 gaps, 1 stale. Send one throwaway prompt ("hello") so the first real call is not a cold start. Have a second API key in `.env.backup`.
 
-**Act 2 — QUERY → the Contradiction-Killer** *(the moment to protect)*
-> Prompt: **"What are our criteria for a successful project?"**
-Watch (in the trace): reads root index → playbooks index → opens BOTH playbooks → **rejects `project-success-legacy` because status: deprecated** → answers from `project-success-v2`, citing it.
-Say: *"It didn't average two contradictory notes. It reasoned about which to trust."*
+## Beats (about 9 minutes)
 
-**Act 3 — RESEARCH → ADD** *(researcher → writer → linker → reviewer — the full multi-agent chain)*
-> Prompt: **"Research the current impact of AI Overviews on click-through, and add it to my brain."**
-Watch: researcher runs `google_search`; writer drafts a new OKF note (status: **draft**); linker indexes it; reviewer runs `lint_vault` and asks you to verify. New amber node on the graph.
-Say: *"Four specialist agents — research, write, link, review — and a human still signs off."*
+**0. Read the graph (45 s).** No prompt. Point at: green = I reviewed it, blue = a machine checked it, grey = deprecated, red ring = stale, dashed = linked but not written. Click *Open Knowledge Format* to show the frontmatter panel.
 
-**Act 4 — MAINTAIN + VERIFY → node goes green** *(reviewer, then a human verify)*
-> Prompt: **"Anything in my brain rotting or contradictory?"**
-Watch: reviewer flags `agentic-search` (past `stale_after`) and the deprecated legacy playbook.
-> Prompt: **"Verify concepts/<the draft you just wrote>."**
-Watch: `verify_note` stamps it stable → refresh `viz.html` → the node flips **amber → green**.
-Say: *"Your second brain does its own upkeep — and you stay the human in the loop."*
+**1. Capture from the web (2.5 min).**
+> Research Model Context Protocol and add it to my brain.
 
-**Close:** zoom out on the tidier, mostly-green graph. *"RAG reads your notes. This agent keeps them."*
+Watch the trace: `brain_overview` → `web_scout` → `save_source` (x2 or x3) → `save_concept`. On the graph the dashed MCP node turns solid amber and pulses, with new source diamonds and tag dots. Click it: summary, key points, tags, `status: draft`, `generated.by`, footnoted sources. Say: nobody typed a tag or a link.
 
-## Between runs
-```bash
-./reset.sh     # restores the vault, rebuilds viz.html
-```
+**2. Highlight and save (1.5 min).** Open https://ai.google.dev/gemini-api/docs/embeddings in a tab. Highlight the opening paragraph, click the extension button, click **Save highlight**.
 
-## Fallbacks
-- Act 1/3 write misbehaves → `git checkout -- my-second-brain`, use a pre-written note, or cut to recording.
-- Act 3 network/`google_search` flaky → skip to Act 4, or use the canned draft in `demo_backup/`.
-- Anything red → play the full screen recording; the acts are independent, so you can also drop Act 3 or 4 for time.
+The popup shows the passage, then the path, tags and link count. On the graph a source diamond appears first (the highlight, saved by code), then an amber concept (written by Gemini). Click the diamond to show the passage quoted word for word.
+
+Typed fallback if the extension misbehaves:
+> Read https://ai.google.dev/gemini-api/docs/embeddings and add a note called Vector Embeddings.
+
+**3. Ask, and the contradiction (1.5 min).**
+> Which OKF field records when a concept last changed?
+
+Two notes disagree. The agent should answer `generated.at`, cite `concepts/okf-trust-signals.md`, and say it ignored the deprecated v0.1 note. This beat needs no network beyond Gemini itself. Protect it.
+
+**4. What next? (1.5 min).**
+> What should I learn next, and is anything going stale?
+
+`review_brain` returns the stale *Gemini Models* note, any new gaps the captures created, and thinly covered tags. Then:
+> Refresh the Gemini Models note.
+
+The red-ringed green node becomes amber: new content, and trust resets because a different actor wrote it.
+
+**5. Trust ladder (2 min).**
+> Fact-check the Model Context Protocol note.
+
+`fact_checker` re-reads the sources, `record_check` adds a machine `verified` entry. Amber turns blue.
+> I have read it. Verify it.
+
+ADK shows a confirmation prompt. Click confirm. Blue turns green, status becomes stable. Open the file in an editor and show the two `verified` entries.
+
+**Close.** Open `vault/` in a file browser or Obsidian. It is a folder of markdown. `git diff` shows exactly what the agent changed.
+
+## If something breaks
+
+| Problem | Do this |
+|---|---|
+| Search or URL read hangs past 25 s | Stop the run. In a third terminal: `python scripts/offline_capture.py model-context-protocol`. The graph updates the same way. Say so openly. |
+| Beat 4 refresh fails | `python scripts/offline_capture.py gemini-models` |
+| Extension popup says it cannot reach the second brain | `graph_server.py` is not running or is on another port. Use the typed fallback for beat 2. |
+| Quota or key error | Swap in the backup key, restart `adk web`. |
+| Agent skips a step or rambles | Start a new session and repeat the prompt. Sessions are independent. |
+| Everything is down | `python graph_server.py --export viz.html` beforehand and walk through the exported file, or play the screen recording. |
+
+Beats 2 and 4b are optional. Cut them first if you are short on time. Beats 1, 3 and 5 carry the talk.
