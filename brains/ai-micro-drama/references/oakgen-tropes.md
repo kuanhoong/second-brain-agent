@@ -5,7 +5,7 @@ description: The recurring micro-drama tropes and how each opens on an injustice
 resource: "https://oakgen.ai/blog/micro-drama-tropes-and-hooks"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: oakgen-tropes
     resource: "https://oakgen.ai/blog/micro-drama-tropes-and-hooks"

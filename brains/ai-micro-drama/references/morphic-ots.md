@@ -5,7 +5,7 @@ description: "Playing a conversation over one character's shoulder in 9:16."
 resource: "https://morphic.com/resources/shots/over-the-shoulder-vertical"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: morphic-ots
     resource: "https://morphic.com/resources/shots/over-the-shoulder-vertical"

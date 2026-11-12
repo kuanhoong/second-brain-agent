@@ -4,7 +4,7 @@ title: Micro Drama Platforms
 description: "The apps that distribute micro-dramas outside China, led by ReelShort and DramaBox."
 tags: [industry, platforms, distribution]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-02-08T09:00:00Z
 sources:
   - id: sensor-tower-2026

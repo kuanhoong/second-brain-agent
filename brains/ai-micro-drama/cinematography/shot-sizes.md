@@ -4,7 +4,7 @@ title: Shot Sizes
 description: "Extreme close-up to wide shot, and which sizes carry a vertical micro drama."
 tags: [cinematography, shot-size, vocabulary]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: vertex-veo-guide

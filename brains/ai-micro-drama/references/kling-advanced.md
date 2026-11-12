@@ -5,7 +5,7 @@ description: Kling's own advice on micro-expressions and body language in prompt
 resource: "https://kling.ai/blog/ai-video-prompts-advanced-techniques-realistic"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: kling-advanced
     resource: "https://kling.ai/blog/ai-video-prompts-advanced-techniques-realistic"

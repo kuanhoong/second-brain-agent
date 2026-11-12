@@ -4,7 +4,7 @@ title: Continuity and the 180 Rule
 description: "Screen direction, eyelines and the 30-degree rule, which AI video breaks unless you plan them."
 tags: [cinematography, continuity, editing]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: storyblocks-continuity

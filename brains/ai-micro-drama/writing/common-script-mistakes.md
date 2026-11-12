@@ -4,7 +4,7 @@ title: Common Script Mistakes
 description: "The mistakes that sink vertical scripts, from adapting a TV pilot to resolving the episode."
 tags: [writing, mistakes]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: filmustage-script

@@ -4,7 +4,7 @@ title: Voice Casting
 description: "Choosing one voice per character and keeping it across episodes, tools and languages."
 tags: [characters, audio, voice]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: morphic-dubbing

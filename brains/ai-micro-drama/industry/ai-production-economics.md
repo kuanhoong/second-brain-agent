@@ -4,7 +4,7 @@ title: AI Production Economics
 description: "What AI changes in micro-drama cost, speed and volume, with reported figures and their caveats."
 tags: [industry, ai-video, economics]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-02-08T09:00:00Z
 sources:
   - id: 36kr-tiered

@@ -5,7 +5,7 @@ description: "What the NRTA micro-drama measures require, including AI labels in
 resource: "https://www.remio.ai/post/chinas-nrta-tightens-ai-micro-drama-rules-as-98-7-reportedly-fail-to-break-even"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: remio-nrta
     resource: "https://www.remio.ai/post/chinas-nrta-tightens-ai-micro-drama-rules-as-98-7-reportedly-fail-to-break-even"

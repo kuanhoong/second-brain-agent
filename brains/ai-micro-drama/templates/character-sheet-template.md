@@ -4,7 +4,7 @@ title: Character Sheet Template
 description: "Fill-in template for one character's visual reference: the images to generate and the identity block to paste into prompts."
 tags: [template, characters, consistency]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 ---
 

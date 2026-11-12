@@ -4,7 +4,7 @@ title: Episode Script Template
 description: "Fill-in template for one 60 to 120 second vertical episode, built on the four-beat structure."
 tags: [template, writing, episode]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 ---
 

@@ -4,7 +4,7 @@ title: Sound Design
 description: "Dialogue, effects, ambience and score: the layers that make an AI episode feel finished."
 tags: [production, audio, sound]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: google-veo31

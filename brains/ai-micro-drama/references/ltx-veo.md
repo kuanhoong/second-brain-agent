@@ -5,7 +5,7 @@ description: Tips on separating camera moves and describing camera angles in Veo
 resource: "https://ltx.studio/blog/veo-prompt-guide"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: ltx-veo
     resource: "https://ltx.studio/blog/veo-prompt-guide"

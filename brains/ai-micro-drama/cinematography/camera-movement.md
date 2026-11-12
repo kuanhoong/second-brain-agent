@@ -4,7 +4,7 @@ title: Camera Movement
 description: "Static, push-in, pull-back, tracking, pan, crane, orbit and handheld, and how to prompt them."
 tags: [cinematography, camera-movement, vocabulary]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: google-veo31

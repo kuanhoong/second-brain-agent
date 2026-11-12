@@ -5,7 +5,7 @@ description: Omdia's estimate of global micro-drama revenue for 2025 and its for
 resource: "https://www.communicationstoday.co.in/global-microdrama-revenues-to-reach-14b-in-2026/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: omdia-market
     resource: "https://www.communicationstoday.co.in/global-microdrama-revenues-to-reach-14b-in-2026/"

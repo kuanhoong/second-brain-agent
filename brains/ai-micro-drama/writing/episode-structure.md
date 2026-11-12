@@ -4,7 +4,7 @@ title: Episode Structure
 description: "The four-beat shape of a 60 to 120 second episode: hook, friction, spike, button."
 tags: [writing, structure, episode]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: filmustage-script

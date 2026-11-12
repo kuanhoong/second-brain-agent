@@ -5,7 +5,7 @@ description: Image-to-video prompting and common prompt conflicts.
 resource: "https://www.veo3gen.app/blog/googles-official-veo-31-prompting-guide-vs-community-templates-what-actually-cha"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: veo3gen-i2v
     resource: "https://www.veo3gen.app/blog/googles-official-veo-31-prompting-guide-vs-community-templates-what-actually-cha"

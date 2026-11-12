@@ -4,7 +4,7 @@ title: Genres and Tropes
 description: The wish-fulfilment tropes that dominate micro-drama and how to choose one for episode 1.
 tags: [industry, genre, tropes, writing]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-05-09T09:00:00Z
 sources:
   - id: oakgen-tropes

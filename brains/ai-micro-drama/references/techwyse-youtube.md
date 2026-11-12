@@ -5,7 +5,7 @@ description: YouTube's May 2026 move to detect and label AI content itself.
 resource: "https://www.techwyse.com/news/platform-updates/youtube-automatic-ai-labels-disclosure-may-2026"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: techwyse-youtube
     resource: "https://www.techwyse.com/news/platform-updates/youtube-automatic-ai-labels-disclosure-may-2026"

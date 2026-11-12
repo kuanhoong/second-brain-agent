@@ -5,7 +5,7 @@ description: "Guide to the major micro-drama distribution platforms, their reven
 resource: "https://vitrina.ai/blog/micro-drama-distribution-platforms-2026/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: vitrina-platforms
     resource: "https://vitrina.ai/blog/micro-drama-distribution-platforms-2026/"

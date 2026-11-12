@@ -4,7 +4,7 @@ title: Vertical Prompting
 description: "Prompting for a real 9:16 composition rather than a tall landscape shot."
 tags: [prompting, vertical, 9-16]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-05-09T09:00:00Z
 sources:
   - id: invideo-vertical

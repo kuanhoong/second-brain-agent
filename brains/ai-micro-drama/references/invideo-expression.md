@@ -5,7 +5,7 @@ description: Five levers for better facial performance in AI video.
 resource: "https://invideo.io/faq/how-do-you-improve-facial-expression-quality-in-ai/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: invideo-expression
     resource: "https://invideo.io/faq/how-do-you-improve-facial-expression-quality-in-ai/"

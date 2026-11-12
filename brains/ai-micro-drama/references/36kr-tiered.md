@@ -5,7 +5,7 @@ description: Volume of AI-generated micro-dramas in China in Q1 2026 and the new
 resource: "https://eu.36kr.com/en/p/3903283907004293"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: 36kr-tiered
     resource: "https://eu.36kr.com/en/p/3903283907004293"

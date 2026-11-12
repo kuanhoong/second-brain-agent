@@ -5,7 +5,7 @@ description: The angles and close-ups a character turnaround sheet needs.
 resource: "https://invideo.io/faq/how-do-you-create-a-multi-angle-character-turnaround/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: invideo-turnaround
     resource: "https://invideo.io/faq/how-do-you-create-a-multi-angle-character-turnaround/"

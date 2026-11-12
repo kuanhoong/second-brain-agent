@@ -4,7 +4,7 @@ title: Shot Routing
 description: Sending each shot type to the model that handles it best.
 tags: [production, ai-video, models, workflow]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-01-09T09:00:00Z
 sources:
   - id: invideo-vertical

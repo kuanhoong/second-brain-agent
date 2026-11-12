@@ -4,7 +4,7 @@ title: Captions and Sound-Off
 description: "Designing for viewers who watch muted: captions on every line, placed clear of the app UI."
 tags: [production, captions, accessibility]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-05-09T09:00:00Z
 sources:
   - id: morphic-make

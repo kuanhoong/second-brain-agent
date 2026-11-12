@@ -4,7 +4,7 @@ title: Video Prompt Formula
 description: "The five-part structure for a video prompt: cinematography, subject, action, context, style and ambiance."
 tags: [prompting, veo, ai-video]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-05-09T09:00:00Z
 sources:
   - id: google-veo31

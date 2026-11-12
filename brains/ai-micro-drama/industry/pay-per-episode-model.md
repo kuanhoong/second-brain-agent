@@ -4,7 +4,7 @@ title: Pay-Per-Episode Model
 description: "How micro-drama apps make money: free opening episodes, then coin, subscription or ad unlocks."
 tags: [industry, monetisation, paywall]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-03-10T09:00:00Z
 sources:
   - id: bamboo-paywall

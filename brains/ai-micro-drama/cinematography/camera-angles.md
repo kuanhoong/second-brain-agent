@@ -4,7 +4,7 @@ title: Camera Angles
 description: "Eye level, high, low, overhead, Dutch and POV, and the power dynamics each one signals."
 tags: [cinematography, camera-angle, vocabulary]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: vertex-veo-guide

@@ -5,7 +5,7 @@ description: Planning every shot as an approved panel before any video runs.
 resource: "https://invideo.io/faq/what-is-a-storyboard-first-ai-filmmaking-workflow-and/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: invideo-storyboard-first
     resource: "https://invideo.io/faq/what-is-a-storyboard-first-ai-filmmaking-workflow-and/"

@@ -5,7 +5,7 @@ description: "Vertical composition rules, 9:16 prompting and per-shot model rout
 resource: "https://invideo.io/blog/ai-micro-drama-vertical-shot-generation/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: invideo-vertical
     resource: "https://invideo.io/blog/ai-micro-drama-vertical-shot-generation/"

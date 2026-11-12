@@ -4,7 +4,7 @@ title: Episode Grid Template
 description: "Fill-in season planner, ten episodes per block, with the paywall row marked."
 tags: [template, writing, planning]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 ---
 

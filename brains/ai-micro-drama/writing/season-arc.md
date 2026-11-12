@@ -4,7 +4,7 @@ title: Season Arc
 description: "How 60 to 100 episodes are shaped across a season, from setup to the dark middle to payoff."
 tags: [writing, structure, season]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: filmustage-script

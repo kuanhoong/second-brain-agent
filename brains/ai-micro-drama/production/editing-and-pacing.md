@@ -4,7 +4,7 @@ title: Editing and Pacing
 description: "Cutting a micro-drama episode: tight, fast, and built around the hook and the button."
 tags: [production, editing, pacing]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-05-09T09:00:00Z
 sources:
   - id: morphic-make

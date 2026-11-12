@@ -4,7 +4,7 @@ title: China Micro Drama Rules
 description: "China's 2026 micro-drama regulation, including mandatory AI labels in every episode."
 tags: [distribution, policy, china, regulation]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-03-10T09:00:00Z
 sources:
   - id: remio-nrta

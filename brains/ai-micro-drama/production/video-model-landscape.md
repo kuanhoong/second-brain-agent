@@ -4,7 +4,7 @@ title: Video Model Landscape
 description: "The video models that matter for micro drama in late 2026, and what each is known for."
 tags: [production, ai-video, models, tools]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2026-12-25T09:00:00Z
 sources:
   - id: rangy-compare

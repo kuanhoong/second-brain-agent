@@ -5,7 +5,7 @@ description: "Draft rules on voice cloning and face swapping, and stolen likenes
 resource: "https://www.sixthtone.com/news/1018405/China%20Issues%20Draft%20Regulations%20on%20AI%20Copyright%20Infringement"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: sixthtone-likeness
     resource: "https://www.sixthtone.com/news/1018405/China%20Issues%20Draft%20Regulations%20on%20AI%20Copyright%20Infringement"

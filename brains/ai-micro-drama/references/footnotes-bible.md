@@ -5,7 +5,7 @@ description: "Advice on keeping series bibles short, including giving each chara
 resource: "https://thefootnotes.com.au/?p=3906"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: footnotes-bible
     resource: "https://thefootnotes.com.au/?p=3906"

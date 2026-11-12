@@ -4,7 +4,7 @@ title: Three-Second Hook
 description: "How to open an episode so a scrolling viewer stays: a face, a shock line or a mid-action reveal."
 tags: [writing, hook, retention]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: invideo-hooks

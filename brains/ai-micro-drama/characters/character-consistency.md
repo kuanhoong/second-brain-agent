@@ -4,7 +4,7 @@ title: Character Consistency
 description: "Keeping the same face, build and wardrobe across hundreds of AI shots: a workflow, not a prompt."
 tags: [characters, consistency, ai-video, reference-images]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-05-09T09:00:00Z
 sources:
   - id: figma-consistency

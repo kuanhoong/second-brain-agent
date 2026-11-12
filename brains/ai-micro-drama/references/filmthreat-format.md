@@ -5,7 +5,7 @@ description: "Overview of micro-drama length, episode counts and visual style."
 resource: "https://filmthreat.com/features/what-are-the-characteristics-of-vertical-micro-dramas-key-insights-on-length-and-format/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: filmthreat-format
     resource: "https://filmthreat.com/features/what-are-the-characteristics-of-vertical-micro-dramas-key-insights-on-length-and-format/"

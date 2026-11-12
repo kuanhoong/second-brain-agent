@@ -5,7 +5,7 @@ description: Chinese micro-dramas diversifying beyond formula tropes into family
 resource: "https://workinchina.chinadaily.com.cn/s/202601/06/WS695cb1a5498e3685503399ab/high-stakes-in-short-takes-micro-drama-industry-levels-up.html"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: chinadaily-levels-up
     resource: "https://workinchina.chinadaily.com.cn/s/202601/06/WS695cb1a5498e3685503399ab/high-stakes-in-short-takes-micro-drama-industry-levels-up.html"

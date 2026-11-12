@@ -4,7 +4,7 @@ title: Dialogue Coverage
 description: "Shooting a conversation in 9:16: alternating singles, over-the-shoulder and the tight two-shot."
 tags: [cinematography, dialogue, vertical]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-05-09T09:00:00Z
 sources:
   - id: invideo-vertical

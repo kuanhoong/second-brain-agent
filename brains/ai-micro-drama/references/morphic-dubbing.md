@@ -5,7 +5,7 @@ description: "Transcribe, translate, re-voice and lip-sync a micro-drama episode
 resource: "https://morphic.com/resources/use-cases/microdrama-dubbing"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: morphic-dubbing
     resource: "https://morphic.com/resources/use-cases/microdrama-dubbing"

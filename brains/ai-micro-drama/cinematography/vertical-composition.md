@@ -4,7 +4,7 @@ title: Vertical Composition
 description: "How to compose a 9:16 frame: face in the top third, quiet bottom for captions, stay clear of the app UI."
 tags: [cinematography, vertical, 9-16, composition]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-05-09T09:00:00Z
 sources:
   - id: invideo-vertical

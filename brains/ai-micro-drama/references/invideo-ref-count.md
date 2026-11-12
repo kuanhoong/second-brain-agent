@@ -5,7 +5,7 @@ description: How many reference images a consistent AI character needs.
 resource: "https://invideo.io/faq/how-many-reference-images-do-you-need-for-consistent-ai/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: invideo-ref-count
     resource: "https://invideo.io/faq/how-many-reference-images-do-you-need-for-consistent-ai/"

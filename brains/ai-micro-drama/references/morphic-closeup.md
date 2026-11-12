@@ -5,7 +5,7 @@ description: Why the vertical close-up is the workhorse shot of micro-drama.
 resource: "https://morphic.com/resources/shots/vertical-close-up"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: morphic-closeup
     resource: "https://morphic.com/resources/shots/vertical-close-up"

@@ -5,7 +5,7 @@ description: Release volume of micro-dramas in China in the first half of 2026 a
 resource: "https://technode.com/?p=198514"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: technode-h1
     resource: "https://technode.com/?p=198514"

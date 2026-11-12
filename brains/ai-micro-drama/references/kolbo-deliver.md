@@ -5,7 +5,7 @@ description: "Edit and delivery rules: caption burning order, platform cut versu
 resource: "https://unpkg.com/@kolbo/mcp@1.117.1/skill/references/workflows/micro-drama/edit-deliver.md"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: kolbo-deliver
     resource: "https://unpkg.com/@kolbo/mcp@1.117.1/skill/references/workflows/micro-drama/edit-deliver.md"

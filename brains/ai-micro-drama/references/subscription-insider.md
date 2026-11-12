@@ -5,7 +5,7 @@ description: Summary of Sensor Tower's Q1 2026 download and in-app revenue figur
 resource: "https://www.subscriptioninsider.com/blog/streamers-face-a-new-challenger-for-mobile-attention-microdramas-news"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: subscription-insider
     resource: "https://www.subscriptioninsider.com/blog/streamers-face-a-new-challenger-for-mobile-attention-microdramas-news"

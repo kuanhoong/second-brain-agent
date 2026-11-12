@@ -4,7 +4,7 @@ title: Micro Drama Market
 description: "Size and growth of the micro-drama market in 2025 and 2026, globally and outside China."
 tags: [industry, market, micro-drama]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-02-08T09:00:00Z
 sources:
   - id: omdia-market

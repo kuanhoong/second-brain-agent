@@ -91,7 +91,7 @@ VAULT_DIR=brains/ai-micro-drama adk web                  # ask the curator about
 
 On Windows PowerShell, set it first with `$env:VAULT_DIR="brains/ai-micro-drama"`, or put `VAULT_DIR=` in `.env`. Both servers must point at the same bundle.
 
-Every claim is footnoted to a source page. All 54 concepts were researched and written by Claude in November 2026, so they are `status: draft` and unverified: read them, then ask the curator to verify the ones you trust. Notes on fast-moving topics (models, prices, platform rules) carry short `stale_after` dates on purpose. Two links point to notes not written yet (localization, image models for keyframes): `review_brain` lists them as what to research next.
+Every claim is footnoted to a source page. All 54 concepts were researched and written by an AI research agent in November 2026, so they are `status: draft` and unverified: read them, then ask the curator to verify the ones you trust. Notes on fast-moving topics (models, prices, platform rules) carry short `stale_after` dates on purpose. Two links point to notes not written yet (localization, image models for keyframes): `review_brain` lists them as what to research next.
 
 In the graph, untick tags and sources to see the concepts alone.
 

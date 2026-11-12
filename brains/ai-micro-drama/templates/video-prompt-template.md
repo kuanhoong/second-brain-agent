@@ -4,7 +4,7 @@ title: Video Prompt Template
 description: "Fill-in prompt for one vertical micro-drama shot, combining the five-part formula, 9:16 layout, audio and a style block."
 tags: [template, prompting, vertical]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 ---
 

@@ -5,7 +5,7 @@ description: Academic view of micro-drama tropes and their localisation for West
 resource: "https://www.theweek.in/wire-updates/international/2025/08/19/fes9-short-dramas.html"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: conversation-tropes
     resource: "https://www.theweek.in/wire-updates/international/2025/08/19/fes9-short-dramas.html"

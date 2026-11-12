@@ -4,7 +4,7 @@ title: Cliffhanger Types
 description: "The four endings that make the next episode a compulsion, and how to cut them."
 tags: [writing, cliffhanger, retention]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: invideo-hooks

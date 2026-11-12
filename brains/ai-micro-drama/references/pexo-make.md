@@ -5,7 +5,7 @@ description: "Six production steps for a micro-drama, including vertical staging
 resource: "https://pexo.ai/tutorial/how-to-make-a-micro-drama"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: pexo-make
     resource: "https://pexo.ai/tutorial/how-to-make-a-micro-drama"

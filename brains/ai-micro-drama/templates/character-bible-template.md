@@ -4,7 +4,7 @@ title: Character Bible Template
 description: "Fill-in template for who a character is: want, wound, secret, power arc and voice."
 tags: [template, characters, bible]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 ---
 

@@ -5,7 +5,7 @@ description: Planning a micro-drama as an episode grid in blocks of ten with a l
 resource: "https://storyflow.so/micro-drama-script"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: storyflow-script
     resource: "https://storyflow.so/micro-drama-script"

@@ -5,7 +5,7 @@ description: "Comparison of 2026 video models, including the Sora 2 shutdown dat
 resource: "https://rangy.ai/blog/ai-video-generators-compared-2026"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: rangy-compare
     resource: "https://rangy.ai/blog/ai-video-generators-compared-2026"

@@ -4,7 +4,7 @@ title: Lens and Focus
 description: "Focal length, depth of field and focus effects, and the words video models respond to."
 tags: [cinematography, lens, vocabulary]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-11-10T09:00:00Z
 sources:
   - id: google-veo31

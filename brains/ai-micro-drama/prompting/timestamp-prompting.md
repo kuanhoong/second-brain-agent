@@ -4,7 +4,7 @@ title: Timestamp Prompting
 description: "Directing several shots inside one generation with time ranges, and the multi-shot modes that do the same."
 tags: [prompting, multi-shot, veo, kling]
 status: draft
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 stale_after: 2027-03-10T09:00:00Z
 sources:
   - id: google-veo31

@@ -5,7 +5,7 @@ description: Media Partners Asia's sizing of the micro-drama market outside Chin
 resource: "https://indiantelevision.com/iworld/reelshort-set-to-cross-1-bn-as-micro-drama-market-gathers-pace/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: mpa-reelshort
     resource: "https://indiantelevision.com/iworld/reelshort-set-to-cross-1-bn-as-micro-drama-market-gathers-pace/"

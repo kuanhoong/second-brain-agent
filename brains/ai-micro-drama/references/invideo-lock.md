@@ -5,7 +5,7 @@ description: "Generating options, locking one sheet and attaching it to every ge
 resource: "https://invideo.io/faq/how-do-you-use-ai-character-sheet-grid-panels-to-keep/"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: invideo-lock
     resource: "https://invideo.io/faq/how-do-you-use-ai-character-sheet-grid-panels-to-keep/"

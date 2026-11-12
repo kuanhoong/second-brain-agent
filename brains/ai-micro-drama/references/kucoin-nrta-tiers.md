@@ -5,7 +5,7 @@ description: The tiered classification notice for AI micro-dramas.
 resource: "https://www.kucoin.com/news/flash/china-s-national-radio-and-tv-administration-issues-ai-micro-drama-classification-standards"
 tags: [source]
 status: stable
-generated: { by: claude/claude-opus-5-5, at: 2026-11-10T09:00:00Z }
+generated: { by: research-agent, at: 2026-11-10T09:00:00Z }
 sources:
   - id: kucoin-nrta-tiers
     resource: "https://www.kucoin.com/news/flash/china-s-national-radio-and-tv-administration-issues-ai-micro-drama-classification-standards"
