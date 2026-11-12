@@ -1,0 +1,25 @@
+{
+  "_note": "Canned capture for when the venue Wi-Fi fails. Written by hand, replayed through the same tools the agent uses.",
+  "sources": [
+    {
+      "url": "https://modelcontextprotocol.io/",
+      "title": "Model Context Protocol documentation",
+      "summary": "The official documentation describes MCP as an open protocol that standardises how applications give context and tools to large language models. It covers the client and server roles and the primitives a server can expose.",
+      "author": "Model Context Protocol project"
+    }
+  ],
+  "concept": {
+    "title": "Model Context Protocol",
+    "description": "An open protocol that standardises how AI applications connect models to external tools and data.",
+    "summary": "The Model Context Protocol (MCP) gives AI applications one standard way to plug a model into tools and data sources. A host application runs MCP clients, each client talks to an MCP server, and the server exposes capabilities the model can use. Agent frameworks such as the Agent Development Kit can load an MCP server's tools directly.",
+    "key_points": [
+      "Introduced by Anthropic in November 2024 as an open standard.",
+      "Client and server exchange JSON-RPC 2.0 messages.",
+      "Servers expose three primitives: tools, resources and prompts.",
+      "One server works with any MCP-capable client, so integrations are written once."
+    ],
+    "tags": ["mcp", "agents", "open-standard", "tools"],
+    "related": ["Agent Development Kit", "Open Knowledge Format"],
+    "shelf_life_days": 120
+  }
+}

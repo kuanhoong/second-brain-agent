@@ -1,129 +1,142 @@
-# 🧠 Agentic Second Brain — OKF × Gemini × ADK
+# Second Brain: Open Knowledge Format (OKF) meets Google Gemini
 
-A working demo of a **self-maintaining second brain**. Your notes live as an [Open Knowledge Format](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing) (OKF) vault of plain Markdown, and a **multi-agent system** built on Google's [Agent Development Kit](https://adk.dev/) (ADK), powered by **Gemini**, reads it, answers from it, writes new notes, and keeps it healthy.
+A second brain that fills itself in. You name a topic or paste a URL. Gemini finds and reads the sources, writes a summary, tags it, files it as an [Open Knowledge Format](https://github.com/GoogleCloudPlatform/open-knowledge-format) v0.2 concept, and links it into a knowledge graph that redraws live while the agent works.
 
-> **The idea in one line:** RAG *reads* your notes. This agent *keeps* them. Because every note carries OKF trust signals (`status: stable | draft | deprecated`), the agent's answers are deterministic and contradiction free.
+Built with the Agent Development Kit (ADK) 2.x and a Google AI Studio API key. Demo for the talk *Building an Intelligent Second Brain: Open Knowledge Format (OKF) Meets Google Gemini* (DevFest Kuala Lumpur 2026).
 
-Built for a talk on building an intelligent second brain with Obsidian and Gemini.
+## What it shows
 
+| You say | What happens | What you see in the graph |
+|---|---|---|
+| "Research Model Context Protocol and add it to my brain" | `web_scout` searches with Google Search grounding. The curator files each source, then writes one concept with a summary, key points, tags and links. | A dashed "gap" node turns into a solid amber node, wired to its sources, tags and related concepts. |
+| Highlight a passage on any web page and click **Save highlight** in the Chrome extension | The highlight is filed word for word as a source. A restricted agent then writes one draft concept from it. | A new amber node appears, linked to its source diamond. |
+| "Read https://ai.google.dev/gemini-api/docs/embeddings and add a note called Vector Embeddings" | `page_reader` reads the page with the Gemini URL context tool. Same filing pipeline. | The second gap fills in, with a source diamond. |
+| "Which OKF field records when a concept last changed?" | The curator reads two conflicting notes, ignores the `deprecated` one, answers from the current one and cites it. | Nothing changes. That is the point. |
+| "What should I learn next?" | `review_brain` reports gaps (linked but unwritten), stale notes, and thinly covered tags. | The dashed and red-ringed nodes are the to-do list. |
+| "Fact-check the MCP note" | `fact_checker` re-reads the sources and checks every key point. A pass adds a machine `verified` entry. | Amber turns blue (machine-confirmed). |
+| "I have reviewed it, verify it" | ADK asks you to confirm the tool call. Your review is recorded as `human:<you>` and the note becomes `stable`. | Blue turns green (human-reviewed). |
+
+## Why OKF
+
+The vault is a plain folder of markdown. Any editor, `git`, Obsidian, or another agent can read it. OKF v0.2 adds the part an agent-written knowledge base needs: every concept says where it came from, who wrote it, who confirmed it and when it goes stale, all in frontmatter.
+
+```yaml
 ---
-
-## How it works
-
-A root **Archivist** agent (Gemini Flash) answers questions from the vault and delegates the work of maintaining it to four specialists. It follows two rules baked into its instruction: read an index before opening notes (progressive disclosure), and answer only from `stable` notes.
-
-```mermaid
-flowchart TD
-    U["You — a prompt in adk web"] --> A["Archivist orchestrator<br/>(Gemini Flash)"]
-
-    A -- "research_tool" --> R["researcher<br/>(google_search)"]
-    A -. "transfer" .-> W["writer<br/>(write_note)"]
-    A -. "transfer" .-> L["linker<br/>(append_index)"]
-    A -. "transfer" .-> RV["reviewer<br/>(lint_vault)"]
-
-    A -->|"read_index · read_note · search_notes"| V
-    A -->|"verify_note"| V
-    R -->|"returns a brief"| A
-    W -->|"write_note (status: draft)"| V
-    L -->|"append_index"| V
-    RV -->|"lint_vault"| V
-
-    V["OKF Vault<br/>Markdown + YAML frontmatter"] --> G["viz.html<br/>knowledge graph"]
-    A -->|"grounded answer + citations"| U
-```
-
-The search agent is wrapped as an **AgentTool** rather than a transfer sub-agent, because Gemini does not allow a built-in tool (`google_search`) and function calling in the same request. As an AgentTool it runs isolated, so real web search works.
-
-### Trust signals
-
-Every note has a `status`. The whole point of the demo is that the agent reasons about it.
-
-```mermaid
-stateDiagram-v2
-    [*] --> draft: agent writes a note
-    draft --> stable: human runs verify_note
-    stable --> deprecated: superseded by a newer note
-    deprecated --> [*]: archived
-    note right of stable
-        Answers come ONLY from stable notes.
-        Deprecated notes are never used.
-    end note
-```
-
-### The signature moment (Contradiction-Killer)
-
-The vault ships with two conflicting playbooks, one `stable` and one `deprecated`. Ask the agent a question they both answer, and it does not average them. It reads the frontmatter and picks the trusted one.
-
-```mermaid
-sequenceDiagram
-    actor U as You
-    participant A as Archivist
-    participant V as OKF Vault
-    U->>A: What are our criteria for a successful project?
-    A->>V: read_index() then read_index("playbooks")
-    A->>V: read_note("project-success-v2.md")  [stable]
-    A->>V: read_note("project-success-legacy.md")  [deprecated]
-    Note over A: rejects the deprecated note by its status
-    A-->>U: answers from v2, with a citation
-```
-
+type: Concept
+title: Model Context Protocol
+description: An open protocol that standardises how AI applications connect models to external tools and data.
+tags: [mcp, agents, open-standard, tools]
+status: draft
+generated: { by: second-brain/gemini-3.8-flash, at: 2026-11-14T03:10:00Z }
+stale_after: 2027-03-14T03:10:00Z
+sources:
+  - id: model-context-protocol-documentation
+    resource: /references/model-context-protocol-documentation.md
+    title: Model Context Protocol documentation
 ---
-
-## Repository layout
-
-```
-second-brain-agent/
-├── my-second-brain/        # the OKF vault (dev-learning notes)
-│   ├── index.md · log.md
-│   ├── concepts/  playbooks/  references/  00_inbox/
-│   └── every note = Markdown + YAML frontmatter trust signals
-├── archivist/              # the multi-agent ADK app
-│   ├── agent.py            # root orchestrator (root_agent)
-│   ├── sub_agents.py       # researcher (AgentTool) + writer + linker + reviewer
-│   ├── tools.py            # FunctionTools over the vault
-│   └── okf.py              # OKF parse / write / graph helpers
-├── build_viz.py            # generates an offline, colour-coded graph (viz.html)
-├── run_demo.md             # the demo runsheet (prompts + fallbacks)
-├── reset.sh                # restore the vault from git between runs
-├── demo_backup/            # canned fallback note for the research beat
-├── requirements.txt · .env.example · .gitignore · LICENSE
 ```
 
-## Quickstart
+The trust tier is not stored. It is derived from `verified`, exactly as the spec says: no entry is **unverified**, non-human actors only is **machine-confirmed**, a `human:` actor is **human-reviewed**.
 
-Requires Python 3.10+ and a free [Google AI Studio](https://aistudio.google.com/apikey) key.
+## Architecture
+
+```mermaid
+flowchart LR
+    U([You in adk web]) --> C[curator<br/>Gemini 3.8 Flash]
+    C -->|AgentTool| S[web_scout<br/>google_search]
+    C -->|AgentTool| R[page_reader<br/>url_context]
+    C -->|AgentTool| F[fact_checker<br/>url_context]
+    C -->|function tools| T[save_source · save_concept<br/>search_brain · read_concept<br/>review_brain · record_check<br/>verify_concept · deprecate_concept]
+    T --> V[(vault/<br/>OKF v0.2 bundle)]
+    V --> G[graph_server.py<br/>live knowledge graph]
+```
+
+Design choices worth pointing out on stage:
+
+- **The model decides what to save. Code decides how it lands on disk.** `save_concept` sets `status: draft`, `generated`, `stale_after` and the `sources` block itself, normalises tags against the existing vocabulary, and rebuilds `index.md` and `log.md`. The frontmatter is valid OKF whatever the model does.
+- **Linking is automatic.** A new concept is linked to what the model names, plus any concept that shares two or more tags or is mentioned by title. Tags and sources add more edges. Links to concepts that do not exist yet are kept: OKF allows broken links, and they become the "what to learn next" list.
+- **Writing and confirming are different actors.** The agent never verifies its own work. A separate checker can make a note machine-confirmed. Only a human, through an ADK tool confirmation, makes it stable.
+- **Human-reviewed notes are protected.** The agent cannot overwrite a fresh human-reviewed concept. It can rewrite one that is past its `stale_after`.
+
+## Run it
+
+Python 3.10 or newer.
 
 ```bash
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env          # paste your GOOGLE_API_KEY
-python build_viz.py           # generate viz.html, open it in a browser
-adk web                       # dev UI → select the "archivist" agent
+cp .env.example .env            # paste your Google AI Studio key
+
+python graph_server.py          # terminal 1: live graph at http://localhost:8765
+adk web                         # terminal 2: open the dev UI, pick "second_brain"
 ```
 
-Your key lives only in `.env`, which is gitignored and never committed.
+Put the two browser windows side by side: chat on the left, graph on the right. `run_demo.md` has the stage runsheet.
 
-## Run the demo
+## Example brain: AI micro drama
 
-Select the **archivist** agent in `adk web`, keep `viz.html` open beside it, and run these four prompts in order. Full runsheet with fallbacks is in [`run_demo.md`](run_demo.md).
+`brains/ai-micro-drama/` is a second, larger OKF bundle on making AI micro dramas: 54 concepts and 63 source references across industry, writing, characters, prompting, cinematography, production and distribution, plus fill-in templates for character sheets, bibles, episode scripts, shot lists and video prompts. Start at `ai-micro-drama.md`.
 
-1. **Compile** — `Read 00_inbox/dump.md, compile it into a proper OKF concept note under concepts/, give it valid frontmatter, and link it into the concepts index.` A messy note becomes a clean, linked `draft` note (a new amber node in the graph).
-2. **Contradiction-Killer** — `What are our criteria for a successful project?` The agent opens both playbooks, rejects the `deprecated` one, and answers from the `stable` one.
-3. **Multi-agent research** — `Research the current impact of AI Overviews on click-through, and add it to my brain.` researcher → writer → linker → reviewer.
-4. **Maintain and verify** — `Anything in my brain rotting or contradictory?` then `Verify concepts/<the draft note>.` The reviewer flags the stale and deprecated notes; verifying flips the draft node amber → green.
+```bash
+VAULT_DIR=brains/ai-micro-drama python graph_server.py   # graph of this brain
+VAULT_DIR=brains/ai-micro-drama adk web                  # ask the curator about it, or add to it
+```
 
-The graph does not auto-refresh: after any beat that writes a note, re-run `python build_viz.py` and reload `viz.html`. Between runs, `./reset.sh` restores the vault from git.
+Every claim is footnoted to a source page. All 54 concepts were researched and written by Claude in November 2026, so they are `status: draft` and unverified: read them, then ask the curator to verify the ones you trust. Notes on fast-moving topics (models, prices, platform rules) carry short `stale_after` dates on purpose. Two links point to notes not written yet (localization, image models for keyframes): `review_brain` lists them as what to research next.
 
-## The graph (`viz.html`)
+In the graph, press `f` to fit the view, and untick tags and sources to see the concepts alone.
 
-A fully offline, dependency-free force-directed graph. Nodes are coloured by trust signal: **green** stable, **amber** draft, **grey** deprecated, **blue** index; a **pink ring** marks notes past their `stale_after` date. Every agent action changes the picture.
+## Chrome extension: capture what you highlight
 
-## Caveats
+`extension/` is a small Manifest V3 extension. Highlight text on any page, then use the toolbar button, the right-click item "Save highlight to Second Brain", or `Alt+Shift+S`.
 
-- **OKF** is an early open spec. The `status / verified / stale_after` trust-signal fields here are a spec-compatible convention (OKF only requires `type`). Verify the current spec before relying on it.
-- **ADK** APIs and Gemini model ids move quickly. This targets `google-adk` with `adk web`; pin an exact model id and re-test before relying on it. Some ADK versions require `google_search` to be the only tool on its agent, which is why the search agent is wrapped as an `AgentTool`.
-- Agents are non-deterministic. The pre-seeded vault plus `./reset.sh` keep the demo reproducible.
-- `google_search` and Gemini calls consume Google AI Studio free-tier limits.
+1. Open `chrome://extensions`, turn on Developer mode, click **Load unpacked** and pick the `extension/` folder.
+2. Keep `python graph_server.py` running. The extension posts to `http://127.0.0.1:8765/api/capture`.
+3. Highlight, save, and watch the node appear in the graph.
 
-## License
+How a capture is handled:
 
-MIT. See [LICENSE](LICENSE).
+- **Code first.** The highlight is written verbatim into a Reference concept before any model runs. With no key or no network you still keep the passage, and the popup tells you it was saved but not summarised.
+- **Then Gemini.** `highlight_filer` writes one draft concept from the passage. It has two tools only, `brain_overview` and `save_concept`: no web access, no verify, no deprecate. Text from a web page is untrusted input, so the agent that reads it can do very little.
+- **Locked down.** The server listens on 127.0.0.1 and accepts captures only from a `chrome-extension://` origin, so an ordinary web page cannot post into your brain.
+- **Works where URL reading cannot.** The text comes from your browser, so logged-in and paywalled pages work. It is also sent to the Gemini API, so do not highlight anything confidential.
+
+Other commands:
+
+```bash
+python scripts/validate.py                              # OKF v0.2 conformance check
+python scripts/offline_capture.py model-context-protocol   # canned capture, no network
+python graph_server.py --export viz.html                # self-contained offline graph
+pip install -r requirements-dev.txt && pytest -q        # offline tests, no API key
+./reset.sh                                              # restore the vault (needs a git commit)
+```
+
+## Layout
+
+```
+second_brain/        ADK app
+  agent.py           curator + web_scout, page_reader, fact_checker, highlight_filer
+  capture.py         highlight capture for the Chrome extension
+  tools.py           function tools over the vault
+  okf.py             OKF v0.2: parse, write, index, log, validate, graph
+  config.py          model ID and owner id
+vault/               the OKF bundle for the talk demo (9 concepts, 2 references)
+brains/ai-micro-drama/  a larger example bundle (54 concepts, 63 references)
+extension/           Chrome extension: save the highlighted text
+viewer/index.html    dependency-free canvas graph (no CDN, works offline)
+graph_server.py      serves the viewer, /api/graph and /api/capture
+demo_backup/         canned captures for the offline fallback
+scripts/             validate.py, offline_capture.py
+tests/               offline tests for the OKF layer and the tools
+run_demo.md          stage runsheet
+```
+
+## Honest notes
+
+- The seed vault was written by hand for the demo. Its frontmatter is set so the graph starts with every state visible: human-reviewed, machine-confirmed, deprecated, stale, and two gaps.
+- Agent output is not deterministic. Rehearse with the exact model ID you will use on stage and keep `demo_backup/` ready.
+- Model IDs and ADK APIs move fast. This was written against `google-adk` 2.14 and `gemini-3.8-flash` in November 2026. Check both before you rely on them.
+- Search and URL reads count against your AI Studio quota.
+- OKF is at v0.2 and still changing. `superseded_by` is this demo's own extension key, which the spec permits.
+
+MIT licensed.

@@ -1,0 +1,25 @@
+{
+  "_note": "Canned refresh of the stale Gemini Models note. Facts checked on 10 November 2026; re-check before the talk.",
+  "sources": [
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "title": "Gemini deprecations",
+      "summary": "Google's Gemini API page listing deprecation and shutdown schedules for stable and preview models. It recommends 3.5 Flash-Lite or 3.8 Flash for new projects.",
+      "author": "Google AI for Developers"
+    }
+  ],
+  "concept": {
+    "title": "Gemini Models",
+    "description": "Which Gemini model IDs to use for agents and note-taking work.",
+    "summary": "Model IDs change every few months, so this note has a short shelf life. As of November 2026 the current stable Flash model is gemini-3.8-flash, and Google points new projects to 3.8 Flash or 3.5 Flash-Lite. Older Flash IDs are being retired or routed to newer models.",
+    "key_points": [
+      "Default for agents and summarising: gemini-3.8-flash, generally available since 2 September 2026.",
+      "High-volume extraction and classification: gemini-3.5-flash-lite.",
+      "Google recommends 3.5 Flash-Lite or 3.8 Flash for new projects.",
+      "Pin an exact model ID in code and re-check the deprecations page before a demo."
+    ],
+    "tags": ["gemini", "models", "google"],
+    "related": ["Agent Development Kit"],
+    "shelf_life_days": 30
+  }
+}

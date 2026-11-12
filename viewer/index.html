@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:,">
+<title>Second Brain: live knowledge graph</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#120c2b; --panel:#1b1340; --line:#3a2f6b; --ink:#f3f0ff; --dim:#a79fd0;
+          --human:#34d399; --machine:#60a5fa; --unverified:#fbbf24; --deprecated:#6b7280;
+          --gap:#c4b5fd; --tag:#f472b6; --stale:#f87171; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 system-ui, "Segoe UI", Roboto, sans-serif; overflow:hidden; }
+  canvas { position:fixed; inset:0; display:block; }
+  header { position:fixed; top:14px; left:16px; z-index:2; }
+  h1 { margin:0 0 2px; font-size:19px; letter-spacing:.2px; }
+  #stats { color:var(--dim); font-size:13px; }
+  #live { display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--human); margin-right:6px; }
+  #live.off { background:var(--stale); }
+  #legend { position:fixed; left:16px; bottom:14px; z-index:2; background:rgba(27,19,64,.88); border:1px solid var(--line);
+            border-radius:10px; padding:10px 12px; font-size:13px; }
+  #legend div { display:flex; align-items:center; gap:8px; margin:3px 0; }
+  .dot { width:13px; height:13px; border-radius:50%; flex:none; }
+  .sq { width:11px; height:11px; transform:rotate(45deg); background:#8b83b8; flex:none; margin:0 1px; }
+  #controls { position:fixed; top:14px; right:16px; z-index:3; display:flex; gap:8px; align-items:center; }
+  #controls input[type=search] { background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:8px; padding:7px 10px; width:190px; font:inherit; }
+  #controls label { font-size:13px; color:var(--dim); display:flex; gap:5px; align-items:center; }
+  #panel { position:fixed; top:58px; right:16px; bottom:14px; width:400px; max-width:44vw; z-index:2; background:rgba(27,19,64,.96);
+           border:1px solid var(--line); border-radius:12px; padding:16px 18px; overflow:auto; display:none; }
+  #panel h2 { margin:0 0 4px; font-size:19px; }
+  #panel .desc { color:var(--dim); margin-bottom:10px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 10px; }
+  .chip { border-radius:999px; padding:2px 10px; font-size:12px; border:1px solid var(--line); }
+  #panel pre { white-space:pre-wrap; word-break:break-word; background:#0e0924; border:1px solid var(--line); border-radius:8px; padding:10px; font:12px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+  #panel .body { font-size:14px; }
+  #panel .body h3 { font-size:14px; text-transform:uppercase; letter-spacing:.8px; color:var(--tag); margin:14px 0 4px; }
+  #panel .body ul { padding-left:18px; margin:4px 0; }
+  #panel .body code { background:#0e0924; padding:1px 4px; border-radius:4px; font-size:12.5px; }
+  #panel a { color:var(--machine); }
+  #panel blockquote { margin:6px 0; padding:6px 12px; border-radius:6px; background:#0e0924; color:var(--dim); font-style:italic; }
+  #close { float:right; cursor:pointer; color:var(--dim); border:0; background:none; font-size:20px; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<header>
+  <h1>Second Brain <span style="color:var(--tag)">OKF v0.2</span></h1>
+  <div id="stats"><span id="live"></span><span id="statline">loading</span></div>
+</header>
+<div id="controls">
+  <label><input type="checkbox" id="showTags" checked> tags</label>
+  <label><input type="checkbox" id="showRefs" checked> sources</label>
+  <input type="search" id="q" placeholder="Filter by title or tag">
+</div>
+<div id="legend">
+  <div><span class="dot" style="background:var(--human)"></span>human-reviewed</div>
+  <div><span class="dot" style="background:var(--machine)"></span>machine-confirmed</div>
+  <div><span class="dot" style="background:var(--unverified)"></span>unverified draft</div>
+  <div><span class="dot" style="background:var(--deprecated)"></span>deprecated</div>
+  <div><span class="dot" style="border:2px dashed var(--gap)"></span>not written yet (gap)</div>
+  <div><span class="dot" style="border:3px solid var(--stale)"></span>stale (past stale_after)</div>
+  <div><span class="sq"></span>source &nbsp;<span class="dot" style="background:var(--tag);width:8px;height:8px"></span>tag</div>
+</div>
+<aside id="panel"></aside>
+<script>
+const EMBEDDED = /*__GRAPH__*/null;
+const NOTES = /*__NOTES__*/null;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const COLORS = { "human-reviewed":css("--human"), "machine-confirmed":css("--machine"), "unverified":css("--unverified") };
+const canvas = document.getElementById("c"), ctx = canvas.getContext("2d");
+let W, H, DPR = window.devicePixelRatio || 1;
+let nodes = new Map(), edges = [], selected = null, hover = null, firstLoad = true;
+let view = { x:0, y:0, k:1 }, drag = null, alpha = 1, conceptCount = 0, hubDegree = 0, fitted = false, userMoved = false;
+
+function resize() { W = innerWidth; H = innerHeight; canvas.width = W*DPR; canvas.height = H*DPR; canvas.style.width = W+"px"; canvas.style.height = H+"px"; }
+addEventListener("resize", () => { resize(); alpha = Math.max(alpha, .3); }); resize();
+
+function radius(n) { return n.kind === "tag" ? 5 : n.type === "Reference" ? 9 : n.kind === "gap" ? 13 : 15 + Math.min(n.degree || 0, 8); }
+function visible(n) {
+  if (n.kind === "tag" && !showTags.checked) return false;
+  if (n.type === "Reference" && !showRefs.checked) return false;
+  return true;
+}
+function matches(n) {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  if (!q) return true;
+  return (n.title + " " + (n.tags || []).join(" ")).toLowerCase().includes(q);
+}
+
+function apply(graph) {
+  const seen = new Set();
+  for (const d of graph.nodes) {
+    seen.add(d.id);
+    const old = nodes.get(d.id);
+    if (old) {
+      if (old.trust !== d.trust || old.status !== d.status || old.kind !== d.kind) old.born = performance.now();
+      Object.assign(old, d);
+    } else {
+      const a = Math.random() * 6.28, r = 60 + Math.random() * 120;
+      nodes.set(d.id, Object.assign({ x: W/2 + Math.cos(a)*r, y: H/2 + Math.sin(a)*r, vx:0, vy:0, born: firstLoad ? 0 : performance.now() }, d));
+      alpha = 1;
+    }
+  }
+  for (const id of [...nodes.keys()]) if (!seen.has(id)) nodes.delete(id);
+  edges = graph.edges.filter(e => nodes.has(e.source) && nodes.has(e.target)).map(e => ({ s: nodes.get(e.source), t: nodes.get(e.target), kind: e.kind }));
+  for (const n of nodes.values()) n.degree = 0;
+  for (const e of edges) if (e.kind !== "tag") { e.s.degree++; e.t.degree++; }
+  const degs = [...nodes.values()].filter(n => n.kind === "concept" && n.type !== "Reference").map(n => n.degree).sort((a, b) => b - a);
+  conceptCount = degs.length; hubDegree = degs[Math.min(11, degs.length - 1)] || 0;
+  const c = [...nodes.values()].filter(n => n.kind === "concept" && n.type !== "Reference");
+  const count = t => c.filter(n => n.trust === t && n.status !== "deprecated").length;
+  document.getElementById("statline").textContent =
+    `${c.length} concepts · ${count("human-reviewed")} human-reviewed · ${count("machine-confirmed")} machine-confirmed · ${count("unverified")} unverified · ` +
+    `${[...nodes.values()].filter(n => n.kind === "gap").length} gaps · ${c.filter(n => n.stale).length} stale`;
+  firstLoad = false;
+  if (selected && nodes.has(selected.id)) showPanel(nodes.get(selected.id));
+}
+
+function tick() {
+  const list = [...nodes.values()].filter(visible);
+  if (alpha > 0.02) {
+    for (let i = 0; i < list.length; i++) for (let j = i+1; j < list.length; j++) {
+      const a = list[i], b = list[j]; let dx = b.x-a.x, dy = b.y-a.y, d2 = dx*dx+dy*dy || 1;
+      const f = Math.min(14000 / d2, 6) * alpha, d = Math.sqrt(d2); dx/=d; dy/=d;
+      a.vx -= dx*f; a.vy -= dy*f; b.vx += dx*f; b.vy += dy*f;
+    }
+    for (const e of edges) {
+      if (!visible(e.s) || !visible(e.t)) continue;
+      const rest = e.kind === "tag" ? 95 : e.kind === "source" ? 100 : 190, k = e.kind === "tag" ? .01 : .03;
+      let dx = e.t.x-e.s.x, dy = e.t.y-e.s.y, d = Math.sqrt(dx*dx+dy*dy) || 1, f = (d-rest)*k*alpha;
+      dx/=d; dy/=d; e.s.vx += dx*f; e.s.vy += dy*f; e.t.vx -= dx*f; e.t.vy -= dy*f;
+    }
+    const cx = (panelOpen() ? (W-420)/2 : W/2), cy = H/2 + 10;
+    for (const n of list) {
+      n.vx += (cx-n.x)*.0035*alpha; n.vy += (cy-n.y)*.007*alpha;
+      if (n === drag) { n.vx = n.vy = 0; continue; }
+      n.vx *= .82; n.vy *= .82; n.x += n.vx; n.y += n.vy;
+    }
+    alpha *= .992;
+    if (!fitted && !userMoved && alpha < .12) { fit(list); fitted = true; }
+  }
+  draw(list); requestAnimationFrame(tick);
+}
+
+function fit(list) {
+  if (!list.length) return;
+  const xs = list.map(n => n.x), ys = list.map(n => n.y), pad = 70;
+  const minX = Math.min(...xs) - pad, maxX = Math.max(...xs) + pad, minY = Math.min(...ys) - pad, maxY = Math.max(...ys) + pad;
+  const w = (panelOpen() ? W - 420 : W), h = H - 80;
+  const k = Math.max(.4, Math.min(1.6, Math.min(w / (maxX - minX), h / (maxY - minY))));
+  view.k = k; view.x = w / 2 - k * (minX + maxX) / 2; view.y = 50 + h / 2 - k * (minY + maxY) / 2;
+}
+function draw(list) {
+  ctx.setTransform(DPR,0,0,DPR,0,0); ctx.clearRect(0,0,W,H);
+  ctx.translate(view.x, view.y); ctx.scale(view.k, view.k);
+  const now = performance.now();
+  const focus = selected || hover, near = new Set();
+  if (focus) { near.add(focus.id); for (const e of edges) { if (e.s === focus) near.add(e.t.id); if (e.t === focus) near.add(e.s.id); } }
+  for (const e of edges) {
+    if (!visible(e.s) || !visible(e.t)) continue;
+    const on = focus && (e.s === focus || e.t === focus);
+    ctx.globalAlpha = focus ? (on ? .95 : .08) : (e.kind === "tag" ? .18 : .5);
+    ctx.strokeStyle = e.kind === "tag" ? css("--tag") : e.kind === "source" ? "#8b83b8" : "#b7aef0";
+    ctx.lineWidth = on ? 2 : 1; ctx.setLineDash(e.kind === "source" ? [4,4] : []);
+    ctx.beginPath(); ctx.moveTo(e.s.x, e.s.y); ctx.lineTo(e.t.x, e.t.y); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  for (const n of list) {
+    const r = radius(n), dim = (focus && !near.has(n.id)) || !matches(n);
+    ctx.globalAlpha = dim ? .18 : 1;
+    const age = now - (n.born || 0);
+    if (n.born && age < 6000) {
+      const p = (age % 1200) / 1200;
+      ctx.strokeStyle = "#ffffff"; ctx.globalAlpha = (1-p) * .8; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(n.x, n.y, r + 4 + p*22, 0, 6.3); ctx.stroke(); ctx.globalAlpha = dim ? .18 : 1;
+    }
+    if (n.kind === "gap") {
+      ctx.setLineDash([4,3]); ctx.strokeStyle = css("--gap"); ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 6.3); ctx.stroke(); ctx.setLineDash([]);
+    } else if (n.kind === "tag") {
+      ctx.fillStyle = css("--tag"); ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 6.3); ctx.fill();
+    } else if (n.type === "Reference") {
+      ctx.fillStyle = "#8b83b8"; ctx.save(); ctx.translate(n.x, n.y); ctx.rotate(.785); ctx.fillRect(-r*.75, -r*.75, r*1.5, r*1.5); ctx.restore();
+    } else {
+      ctx.fillStyle = n.status === "deprecated" ? css("--deprecated") : (COLORS[n.trust] || "#fff");
+      ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 6.3); ctx.fill();
+      if (n.stale && n.status !== "deprecated") { ctx.strokeStyle = css("--stale"); ctx.lineWidth = 3.5; ctx.beginPath(); ctx.arc(n.x, n.y, r+4, 0, 6.3); ctx.stroke(); }
+      if (n === selected) { ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(n.x, n.y, r+8, 0, 6.3); ctx.stroke(); }
+    }
+    const big = conceptCount > 30, q = document.getElementById("q").value.trim();
+    const label = (focus && near.has(n.id)) || (q && matches(n)) || view.k > 1.3 ||
+                  (n.kind !== "tag" && (!big || n.kind === "gap" || (n.degree || 0) >= hubDegree));
+    if (label && !(n.type === "Reference" && !(focus && near.has(n.id)) && view.k < 1.3)) {
+      ctx.font = (n.kind === "tag" ? "12px" : n.kind === "gap" ? "italic 14px" : "600 15px") + " system-ui, sans-serif";
+      ctx.fillStyle = n.kind === "tag" ? css("--tag") : n.kind === "gap" ? css("--gap") : "#f3f0ff";
+      ctx.textAlign = "center"; ctx.fillText(n.title, n.x, n.y + r + 17);
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+const panel = document.getElementById("panel");
+const panelOpen = () => panel.style.display === "block";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+function md(body) {
+  let out = "", inList = false;
+  for (const raw of body.split("\n")) {
+    let line = esc(raw).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
+      .replace(/\[\^([^\]]+)\]:\s*/g, '<span style="color:var(--tag)">Source: </span>').replace(/\[\^([^\]]+)\]/g, '<sup style="color:var(--tag)" title="$1">[src]</sup>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, h) => h.endsWith(".md") ? `<a href="#" data-go="${h.replace(/^\//, "")}">${t}</a>` : `<a href="${h}" target="_blank" rel="noopener">${t}</a>`);
+    const li = /^\s*[-*]\s+/.test(raw);
+    if (li && !inList) { out += "<ul>"; inList = true; }
+    if (!li && inList) { out += "</ul>"; inList = false; }
+    if (/^#+\s/.test(raw)) out += `<h3>${line.replace(/^#+\s*/, "")}</h3>`;
+    else if (li) out += `<li>${line.replace(/^\s*[-*]\s+/, "")}</li>`;
+    else if (/^>\s?/.test(raw)) out += `<blockquote>${line.replace(/^&gt;\s?/, "")}</blockquote>`;
+    else if (raw.trim()) out += `<p>${line}</p>`;
+  }
+  return out + (inList ? "</ul>" : "");
+}
+async function showPanel(n) {
+  selected = n; panel.style.display = "block";
+  let head = `<button id="close" title="Close">×</button><h2>${esc(n.title)}</h2><div class="desc">${esc(n.description)}</div>`;
+  if (n.kind === "tag") { panel.innerHTML = head + `<p>Tag shared by ${edges.filter(e => e.t === n).length} concept(s).</p>`; wire(); return; }
+  if (n.kind === "gap") { panel.innerHTML = head + `<p>Nothing is written here yet. OKF allows broken links: they mark knowledge still to be captured. Ask the curator: <i>“Research ${esc(n.title)} and add it to my brain.”</i></p>`; wire(); return; }
+  const color = n.status === "deprecated" ? css("--deprecated") : COLORS[n.trust];
+  head += `<div class="chips"><span class="chip" style="border-color:${color};color:${color}">${esc(n.trust)}</span><span class="chip">status: ${esc(n.status)}</span><span class="chip">${esc(n.type)}</span>` +
+          (n.stale ? `<span class="chip" style="border-color:var(--stale);color:var(--stale)">stale</span>` : "") + `</div>`;
+  let note = NOTES ? NOTES[n.id] : null;
+  if (!note) { try { note = await (await fetch("/api/note?id=" + encodeURIComponent(n.id))).json(); } catch (e) { note = null; } }
+  if (selected !== n) return;
+  panel.innerHTML = head + (note ? `<pre>${esc(note.frontmatter)}</pre><div class="body">${md(note.body)}</div>` : "<p>Could not load the note.</p>");
+  wire();
+}
+function wire() {
+  document.getElementById("close").onclick = () => { selected = null; panel.style.display = "none"; alpha = Math.max(alpha, .2); };
+  panel.querySelectorAll("a[data-go]").forEach(a => a.onclick = ev => { ev.preventDefault(); const t = nodes.get(a.dataset.go); if (t) showPanel(t); });
+}
+
+function at(ev) {
+  const x = (ev.clientX - view.x) / view.k, y = (ev.clientY - view.y) / view.k; let best = null, bd = 1e9;
+  for (const n of nodes.values()) { if (!visible(n)) continue; const d = Math.hypot(n.x-x, n.y-y); if (d < radius(n) + 7 && d < bd) { best = n; bd = d; } }
+  return best;
+}
+let pan = null, moved = false;
+canvas.onmousedown = ev => { moved = false; drag = at(ev); if (!drag) pan = { x: ev.clientX - view.x, y: ev.clientY - view.y }; };
+canvas.onmousemove = ev => {
+  moved = true;
+  if (drag) { drag.x = (ev.clientX - view.x) / view.k; drag.y = (ev.clientY - view.y) / view.k; alpha = Math.max(alpha, .3); }
+  else if (pan) { view.x = ev.clientX - pan.x; view.y = ev.clientY - pan.y; userMoved = true; }
+  else { hover = at(ev); canvas.style.cursor = hover ? "pointer" : "default"; }
+};
+addEventListener("mouseup", ev => { if (drag && !moved) showPanel(drag); else if (!drag && !moved && ev.target === canvas) { selected = null; panel.style.display = "none"; } drag = null; pan = null; });
+canvas.onclick = ev => { const n = at(ev); if (n && !moved) showPanel(n); };
+canvas.onwheel = ev => { ev.preventDefault(); userMoved = true; const k = Math.min(3, Math.max(.4, view.k * (ev.deltaY < 0 ? 1.1 : .9)));
+  view.x = ev.clientX - (ev.clientX - view.x) * k / view.k; view.y = ev.clientY - (ev.clientY - view.y) * k / view.k; view.k = k; };
+for (const id of ["showTags", "showRefs"]) document.getElementById(id).onchange = () => { alpha = 1; fitted = false; };
+addEventListener("keydown", ev => { if (ev.key === "f" && ev.target.tagName !== "INPUT") { userMoved = false; fit([...nodes.values()].filter(visible)); } });
+
+async function poll() {
+  try { const g = await (await fetch("/api/graph", { cache: "no-store" })).json(); apply(g); document.getElementById("live").className = ""; }
+  catch (e) { document.getElementById("live").className = "off"; }
+  setTimeout(poll, 1500);
+}
+if (EMBEDDED) { apply(EMBEDDED); } else { poll(); }
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
